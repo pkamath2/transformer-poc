@@ -44,8 +44,6 @@ class SelfAttention(nn.Module):
 
         s = e // h
 
-        # print(x.shape)
-        # print(self.emb)
         keys    = self.tokeys(x)
         queries = self.toqueries(x)
         values  = self.tovalues(x)

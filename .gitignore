@@ -1,0 +1,6 @@
+runs/events*
+samples/*.wav
+samples/*.png
+checkpoint/*.pt
+samples-1024context-1444train/*
+notebooks/*
