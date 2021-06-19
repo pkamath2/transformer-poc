@@ -32,15 +32,15 @@ class NSynthDataSet_RawAudio(Dataset):
                                                       & (self.nsynth_meta_df['pitch'] < self.upper_pitch_limit)]
 
             # Augment this dataset 4 times by copying itself
-            self.nsynth_meta_df['part'] = 1
+            self.nsynth_meta_df['fold'] = 1
             nsynth_meta_df_2 = self.nsynth_meta_df.copy(deep=True)
-            nsynth_meta_df_2['part'] = 2
+            nsynth_meta_df_2['fold'] = 2
             nsynth_meta_df_2.index = nsynth_meta_df_2.index + '-2'
             nsynth_meta_df_3 = self.nsynth_meta_df.copy(deep=True)
-            nsynth_meta_df_3['part'] = 3
+            nsynth_meta_df_3['fold'] = 3
             nsynth_meta_df_3.index = nsynth_meta_df_3.index + '-3'
             nsynth_meta_df_4 = self.nsynth_meta_df.copy(deep=True)
-            nsynth_meta_df_4['part'] = 4
+            nsynth_meta_df_4['fold'] = 4
             nsynth_meta_df_4.index = nsynth_meta_df_4.index + '-4'
             self.nsynth_meta_df = pd.concat([self.nsynth_meta_df, nsynth_meta_df_2, nsynth_meta_df_3, nsynth_meta_df_4])
         
