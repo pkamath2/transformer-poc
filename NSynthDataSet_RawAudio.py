@@ -31,19 +31,19 @@ class NSynthDataSet_RawAudio(Dataset):
             self.nsynth_meta_df = self.nsynth_meta_df[(self.nsynth_meta_df['pitch'] >= self.lower_pitch_limit) \
                                                       & (self.nsynth_meta_df['pitch'] < self.upper_pitch_limit)]
 
-            # Augment this dataset 4 times by copying itself
-            self.nsynth_meta_df['fold'] = 1
-            nsynth_meta_df_2 = self.nsynth_meta_df.copy(deep=True)
-            nsynth_meta_df_2['fold'] = 2
-            nsynth_meta_df_2.index = nsynth_meta_df_2.index + '-2'
-            nsynth_meta_df_3 = self.nsynth_meta_df.copy(deep=True)
-            nsynth_meta_df_3['fold'] = 3
-            nsynth_meta_df_3.index = nsynth_meta_df_3.index + '-3'
-            nsynth_meta_df_4 = self.nsynth_meta_df.copy(deep=True)
-            nsynth_meta_df_4['fold'] = 4
-            nsynth_meta_df_4.index = nsynth_meta_df_4.index + '-4'
-            self.nsynth_meta_df = pd.concat([self.nsynth_meta_df, nsynth_meta_df_2, nsynth_meta_df_3, nsynth_meta_df_4])
-        
+            # Augment this dataset by copying itself
+            self.nsynth_meta_df['fold'] = 0
+            
+            nsynth_meta_df_orig = self.nsynth_meta_df.copy(deep=True)
+            
+            total_dupes = 44
+            
+            for dupe_idx in range(total_dupes):
+                nsynth_meta_df_dupe = nsynth_meta_df_orig.copy(deep=True)
+                nsynth_meta_df_dupe['fold'] = dupe_idx + 1
+                nsynth_meta_df_dupe.index = nsynth_meta_df_dupe.index + f'-{dupe_idx+1}'
+                self.nsynth_meta_df = pd.concat([self.nsynth_meta_df, nsynth_meta_df_dupe])
+            
         print(self.nsynth_meta_df.shape)
     
     def __len__(self):
