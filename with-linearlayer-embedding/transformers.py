@@ -19,9 +19,6 @@ class GTransformer(nn.Module):
         self.token_embedding = nn.Linear(1, emb)
         self.pos_embedding = nn.Linear(seq_length, emb)
         
-#         self.token_embedding = nn.Linear(seq_length, seq_length * emb)
-#         self.pos_embedding = nn.Linear(seq_length, seq_length * emb)
-        
 #         self.token_embedding = nn.Embedding(embedding_dim=emb, num_embeddings=num_tokens)
 #         self.pos_embedding = nn.Embedding(embedding_dim=emb, num_embeddings=seq_length)
 
@@ -40,14 +37,12 @@ class GTransformer(nn.Module):
         :return: predicted log-probability vectors for each token based on the preceding tokens.
         """
         
-        tokens = self.token_embedding(x) # Input to the model = batch_size X sample_length i.e. 16 X 512
-#         tokens = tokens.view(-1, self.seq_length, self.emb)
+        tokens = self.token_embedding(x) # Input to the model = batch_size X sample_length X 1 i.e. 16 X 512 X 1
         b, t, e = tokens.size() # Output from 'Word' embedding = batch_size X sample_length X embedding_size i.e. 16 X 512 X 128
         
         trange = torch.arange(t)
         trange = trange.cuda().float().view(1, -1)
         positions = self.pos_embedding(trange)[None, :, :].expand(b, t, e)# Output from 'Position' embedding = batch_size X sample_length X embedding_size i.e. 16 X 512 X 128
-#         positions = positions.view(self.seq_length, self.emb)
 
         x = tokens + positions # Output from 'Word' + 'Position' embedding = batch_size X sample_length X embedding_size i.e. 16 X 512 X 128 
         
