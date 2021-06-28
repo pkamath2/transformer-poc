@@ -17,7 +17,12 @@ class GTransformer(nn.Module):
         self.num_tokens = num_tokens
         
         self.token_embedding = nn.Linear(1, emb)
+        self.token_embedding_batchnorm = nn.BatchNorm1d(num_features=emb, track_running_stats=False)
+        self.token_embedding_activation = nn.ReLU()
+        
         self.pos_embedding = nn.Linear(seq_length, emb)
+        self.pos_embedding_batchnorm = nn.BatchNorm1d(num_features=emb, track_running_stats=False)
+        self.pos_embedding_activation = nn.ReLU()
         
 #         self.token_embedding = nn.Embedding(embedding_dim=emb, num_embeddings=num_tokens)
 #         self.pos_embedding = nn.Embedding(embedding_dim=emb, num_embeddings=seq_length)
@@ -39,14 +44,21 @@ class GTransformer(nn.Module):
         
         tokens = self.token_embedding(x) # Input to the model = batch_size X sample_length X 1 i.e. 16 X 512 X 1
         b, t, e = tokens.size() # Output from 'Word' embedding = batch_size X sample_length X embedding_size i.e. 16 X 512 X 128
+        tokens = self.token_embedding_batchnorm(tokens.view(b, e, t)).view(b, t, e)
+        tokens = self.token_embedding_activation(tokens)
+        
+#         b, t, e = tokens.size() # Output from 'Word' embedding = batch_size X sample_length X embedding_size i.e. 16 X 512 X 128
         
         trange = torch.arange(t)
         trange = trange.cuda().float().view(1, -1)
         positions = self.pos_embedding(trange)[None, :, :].expand(b, t, e)# Output from 'Position' embedding = batch_size X sample_length X embedding_size i.e. 16 X 512 X 128
-
+        positions = self.pos_embedding_batchnorm(positions.contiguous().view(b, e, t)).view(b, t, e)
+        positions = self.pos_embedding_activation(positions)
+        
+        
         x = tokens + positions # Output from 'Word' + 'Position' embedding = batch_size X sample_length X embedding_size i.e. 16 X 512 X 128 
         
-        x = F.relu(x)
+#         x = F.relu(x)
         
         x = self.tblocks(x) # batch_size X sample_length X embedding_size i.e. 16 X 512 X 128
 

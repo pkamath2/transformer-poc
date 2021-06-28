@@ -18,9 +18,13 @@ class NSynthDataSet_RawAudio(Dataset):
 #         self.lower_pitch_limit = 44 #104hz
 #         self.upper_pitch_limit = 80 #831Hz
 
-        # For reed
-        self.lower_pitch_limit = 60 #147hz
-        self.upper_pitch_limit = 70 #831Hz
+        # For reed 1
+#         self.lower_pitch_limit = 60 #262hz
+#         self.upper_pitch_limit = 70 #467Hz
+        
+        # For reed 2
+        self.lower_pitch_limit = 44 #104Hz
+        self.upper_pitch_limit = 80 #831Hz
 
         self.sample_length = 512
         self.classes = [x for x in range(self.lower_pitch_limit, self.upper_pitch_limit)]
@@ -42,7 +46,7 @@ class NSynthDataSet_RawAudio(Dataset):
             
             nsynth_meta_df_orig = self.nsynth_meta_df.copy(deep=True)
             
-            total_dupes = 8
+            total_dupes = 7
             
             for dupe_idx in range(total_dupes):
                 nsynth_meta_df_dupe = nsynth_meta_df_orig.copy(deep=True)
