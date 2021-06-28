@@ -17,8 +17,9 @@ class GTransformer(nn.Module):
         self.num_tokens = num_tokens
         
         self.token_embedding = nn.Linear(1, emb)
-        self.token_embedding_batchnorm = nn.BatchNorm1d(num_features=emb, track_running_stats=False)
+        self.token_embedding_batchnorm = nn.BatchNorm1d(num_features=emb, track_running_stats=False) 
         self.token_embedding_activation = nn.ReLU()
+        
         
         self.pos_embedding = nn.Linear(seq_length, emb)
         self.pos_embedding_batchnorm = nn.BatchNorm1d(num_features=emb, track_running_stats=False)
