@@ -1,8 +1,6 @@
-https://github.com/pkamath2/raw-audio-transformer
-
 ```diff
 ! This is a buggy Proof of concept.   
-! For a more saner version of raw audio transformers please see the repo at https://github.com/pkamath2/raw-audio-transformer 
+! For a more saner version of Raw Audio Tx, see the repo at https://github.com/pkamath2/raw-audio-transformer 
 ```
 
 # Transformer - Raw Audio
